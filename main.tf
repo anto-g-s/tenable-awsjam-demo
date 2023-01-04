@@ -133,6 +133,12 @@ resource "aws_security_group" "prod_web" {
     cidr_blocks = [ "0.0.0.0/0" ]
 //    cidr_blocks = ["172.31.0.0/28"]
   }
+  ingress {
+    from_port = 161
+    to_port = 161
+    protocol = "udp"
+    cidr_blocks = [ "10.1.1.0/24"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
