@@ -137,7 +137,7 @@ resource "aws_security_group" "prod_web" {
     from_port = 0
     to_port = 161
     protocol = "udp"
-    cidr_blocks = [ "10.1.1.0/24"]
+    cidr_blocks = [ "0.0.0.0/0"]
   }
   egress {
     from_port   = 0
