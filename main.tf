@@ -116,28 +116,28 @@ resource "aws_security_group" "prod_web" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["<cidr>"]
     //    cidr_blocks = ["172.31.0.0/28"]
   }
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["<cidr>"]
     //    cidr_blocks = ["172.31.0.0/28"]
   }
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.1.0.99/24"]
+    cidr_blocks = ["<cidr>"]
     //    cidr_blocks = ["172.31.0.0/28"]
   }
   ingress {
     from_port   = 0
     to_port     = 161
     protocol    = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["<cidr>"]
   }
   egress {
     from_port   = 0
@@ -149,4 +149,29 @@ resource "aws_security_group" "prod_web" {
   tags = {
     Name = "drift_demo"
   }
+}
+
+resource "aws_s3_bucket_policy" "awsjamdemo_bucketpolicy" {
+  bucket = aws_s3_bucket.awsjamdemo_bucket.id
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "awsjamdemo_bucket-restrict-access-to-users-or-roles",
+      "Effect": "Allow",
+      "Principal": [
+        {
+          "AWS": [
+            "<aws_policy_role_arn>"
+          ]
+        }
+      ],
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::awsjamdemo_bucket/*"
+    }
+  ]
+}
+POLICY
 }
